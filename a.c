@@ -5,7 +5,7 @@
 
 int main(int argc, char const *argv[])
 {
-    int a=23;
+    int a=123;
     int b=78;
     printf("%d",a+b);
     return 0;
