@@ -23,7 +23,8 @@ int lexicographic_sort(const char* a, const char* b) {
 
 void pswapfn(const void* arr,int first,int second) {
     psi* temp = (psi*)arr;swapGeneric(psi,temp[first],temp[second]);
-    return;}
+    return;
+}
 
 int pcompfn(const void* arr,int first,int second){
      psi* temp = (psi*)arr;
@@ -69,18 +70,15 @@ void heapSort(const void* words,int wordsSize,comp_func_t cfn,swap_func_t sfn)
 
 char** topKFrequent(char** words, int wordsSize, int k, int* returnSize) 
 {
-    // heapSort, MergeSort
+    // heapSort on words
     heapSort(words,wordsSize,compfn,swapfn);
     psi pairs[wordsSize];
     int z=0,y=0;
     pairs[z].str=words[0],pairs[z].count=1;
-    // for(int i=0;i<wordsSize;i++){
-    //     printf("%s,",words[i]);
-    // }
-    // printf("\n");
+    
+    // group by words(strings)
     for(int i=1;i<wordsSize;i++){
         if(strcmp(words[i-1],words[i])!=0){
-            //printf("inside..");
             z+=1;
             pairs[z].str=words[i],pairs[z].count=1;
         }
@@ -88,11 +86,9 @@ char** topKFrequent(char** words, int wordsSize, int k, int* returnSize)
          pairs[z].count+=1;
     }
     
+    // sort by count
     heapSort(pairs,z+1,pcompfn,pswapfn);
-    // for(int p=0;p<=z;p++){
-    //     printf("(%s,%d),",pairs[p].str,pairs[p].count);
-    // }
-    // printf("\n");
+    
     y=0;
     for(int i=z;y<(k);i--){
         words[y]=pairs[i].str;
