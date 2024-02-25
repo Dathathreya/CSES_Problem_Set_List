@@ -25,6 +25,27 @@ void swapInt(const void* arr,const void* brr,int f,int s){
 	return;
 }
 
+
+int get_partition_point(const void* arr,int begin,int end,compfn_t compfn,swapfn_t swapfn){
+	int prev=begin-1,pivot_pos=end,curr;
+	for(curr=begin;curr<pivot_pos;curr++){
+		if(compfn(arr,NULL,curr,pivot_pos,1)){
+			prev+=1;
+			swapfn(arr,NULL,curr,prev);		
+		}
+	}
+	swapfn(arr,NULL,curr,prev+1);
+	pivot_pos=prev+1;
+	return pivot_pos;
+}
+
+void quickSort(const void* arr,int begin,int end,compfn_t compfn,swapfn_t swapfn){
+	if(begin>=end) return;
+	int pivot = get_partition_point(arr,begin,end,compfn,swapfn);
+	quickSort(arr,begin,pivot-1,compfn,swapfn);
+	quickSort(arr,pivot+1,end,compfn,swapfn);
+}
+
 void merger(const void* arr,int start,int mid,int end,compfn_t compfn,swapfn_t swapfn){
 	int start2=mid+1;
 	if(compfn(arr,NULL,mid,start2,1)){
