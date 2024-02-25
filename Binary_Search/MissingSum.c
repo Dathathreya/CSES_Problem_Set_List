@@ -25,6 +25,31 @@ void swapInt(const void* arr,const void* brr,int f,int s){
 	return;
 }
 
+void heapify(const void* arr,int root,int n,compfn_t compfn,swapfn_t swapfn){
+	int greatest=root;
+	int left=(2*root+1),right=(2*root+2);
+	if((left<n)&&(compfn(arr,NULL,greatest,left,1))){
+		greatest=left;
+	}
+	if((right<n)&&(compfn(arr,NULL,greatest,right,1))){
+		greatest=right;
+	}
+	if(greatest!=root){
+		swapfn(arr,NULL,greatest,root);
+		heapify(arr,greatest,n,compfn,swapfn);
+	}
+}
+
+void heapSort(const void* arr,int begin,int end,compfn_t compfn,swapfn_t swapfn){
+	int centre,n=end-begin+1;
+	for(centre=begin+(n/2)-1;centre>=begin;centre--){
+			heapify(arr,centre,end+1,compfn,swapfn);
+	}
+	for(int len=end;len>=begin;len--){
+		swapfn(arr,NULL,begin,len);
+		heapify(arr,begin,len,compfn,swapfn);
+	}
+}
 
 int get_partition_point(const void* arr,int begin,int end,compfn_t compfn,swapfn_t swapfn){
 	int prev=begin-1,pivot_pos=end,curr;
