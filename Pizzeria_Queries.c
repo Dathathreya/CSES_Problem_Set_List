@@ -38,11 +38,10 @@ void update(int idx,int x,int isLow){ // for inserting (Pa-a) in all values of a
     return;
 }
 
-int query(int start,int end,int isLow){ // endingIndex (1...R)
+int query(int start,int end,int isLow){ // endingIndex (1...R), startingIndex (L,...n)
     start += ((1<<sz)-1);
     end += ((1<<sz)-1);
-    int ans1 = IMX,ans2=IMX;    
-    //printf("%d %d\n",start,end);
+    int ans1 = IMX,ans2=IMX;
            //          1
            //     2         3
            //  4    5    6     7
@@ -83,13 +82,9 @@ void solve(){
        update(i+1,x+(i+1),0);
     }
     int Sz = 2*(1<<sz)-1;
-    // for(i=0;i<Sz;i++){
-    //     printf("(%d,%d)",i,sgtree[i].f);
-    // }
-    // printf("\n");
     // 2 segment tree for storing minimums
-    // 1 segment tree -> a>bidx , value_a + a - bidx 
-    // 2 segment tree -> a<bidx , value_a - a + bidx  
+    // 1 segment tree -> a>=bidx , value_a + a - bidx 
+    // 2 segment tree -> a=<bidx , value_a - a + bidx  
 
     for(i=0;i<q;i++){
         assert(fscanf(stdin,"%d%d",&op,&idx)>0);
@@ -98,9 +93,8 @@ void solve(){
                 int LeftMini  = query(idx,n,0); 
                 int rightMini = query(1,idx,1); 
                   LeftMini  -= idx;
-                  rightMini += idx;   
-                printf("%d\n",min(rightMini,LeftMini));
-                //printf("%d\n",min(LeftMini,rightMini)); /*calling fetch or query method*/ 
+                  rightMini += idx;   /*calling fetch or query method*/ 
+                printf("%d\n",min(rightMini,LeftMini));            
                 break;
             }
             case 1:{
@@ -150,14 +144,14 @@ int main()
             
             // For example case 1: left -> even(10) , right -> even (12)
 
-            // helps us in searching elements between range R and L 
-            // if (end or right) is even it would mean that taking a set further would lead us into
+            // helps us in searching elements between range L and R (both numbers inclusive). 
+            // if (end or right) is even it would mean that taking a step further would lead us into
             // exploring a parent node that covers a most maximum value or index leaf node more than largest number(R)
-            // in my query range , so stopping the exploration by not taking a step further up to parent is crucial
+            // in my query range , so stopping the exploration by not taking a step further up to parent is crucial but we simply decrement the right by 1 to continue querying(go left)
             
 
             // if (start or left) is odd it would mean that taking a step further up would lead us into
             // exploring a parent node that covers least min value as its leaf node which is lesser than my least num(L)
             // in my query range , so stop exploration by not taking a step further upto parent node if start is already odd
-
-            // this could save us inaccurate results          
+            //  but we simply increment the right by 1 to continue querying(go right)
+            // this could save us from  inaccurate results          
