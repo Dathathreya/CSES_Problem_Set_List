@@ -8,7 +8,7 @@
 #define M  ((int)3e5+1)
 #define mod ((int)1e9+7)
 typedef unsigned long long llu;
-llu prec[20][10],temp[20][10]; char str[M]; 
+llu prec[10],temp[10]; char str[M]; 
 
 
 llu queryNoAdjDigit(llu n,bool sign){
@@ -24,7 +24,7 @@ llu queryNoAdjDigit(llu n,bool sign){
 		llu prev=0;
 		if(where>0){
 			for(short digit=0;digit<=9;digit++){
-				prev += prec[where-1][digit];
+				prev += prec[digit];
 			}	
 		}
 		for(short digit=0;digit<=9;digit++){
@@ -32,7 +32,7 @@ llu queryNoAdjDigit(llu n,bool sign){
 			{
 				if(currDigit>digit){
 					if(digit>0)
-						{temp[where][digit] = 1;}
+						{temp[digit] = 1;}
 				}			
 				else{
 					break;
@@ -40,15 +40,15 @@ llu queryNoAdjDigit(llu n,bool sign){
 			}
 			else{
 				// current can be mapped to all previous part ending with any digit which doesnt have same value 
-				temp[where][digit] += (prev-prec[where-1][digit]);
+				temp[digit] += (prev-prec[digit]);
 				// each non-zero digit can start from itself 
 				if(digit>0)
-					temp[where][digit] += 1;
+					temp[digit] += 1;
 				// link prefixtightdigit with current number
 				if((currDigit>digit)&&(carried)){
 					bool holds = (prefixPart!=digit);
 					if(holds){
-						temp[where][digit] += 1; 
+						temp[digit] += 1; 
 					}
 				}
 			}		
@@ -58,7 +58,7 @@ llu queryNoAdjDigit(llu n,bool sign){
 		memcpy(prec,temp,sizeof(temp));
 	}
 	for(short digit=0;digit<=9;digit++){
-		answer += prec[sz-1][digit]; // sum of all digits at last index
+		answer += prec[digit]; // sum of all digits at last index
 	}
 	answer += carried;
 	return answer;
