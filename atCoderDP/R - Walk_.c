@@ -9,11 +9,6 @@ typedef long long int ll;
 
 int mat[51][51],identity[51][51],temp[51][51];
 
-typedef struct mat_2d_int{
-	int mat[51][51],identity[51][51],temp[51][51];
-	int offset=51;
-}m2dint;
-
 int modadd(int a,int b){
 	a += b;
 	if(a>=mod) a-=mod;
@@ -67,7 +62,6 @@ void solve(){
 	memset(mat,0,sizeof(mat));
 	memset(identity,0,sizeof(identity));
 	memset(temp,0,sizeof(temp));
-	m2dint matrix[1];
 	for(i=0;i<n;i++){
 		for(j=0;j<n;j++)
 		{
